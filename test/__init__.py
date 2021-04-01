@@ -3,21 +3,16 @@ from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
 from configs import get_settings
+from main import create
 
-setting = get_settings('test')
+
 # database = create_engine(setting.SQLALCHEMY_DATABASE_URI, encoding='utf-8', max_overflow=0)
 
 
 @pytest.fixture
-def app():
-    app_config = setting.get_app_setting()
-    _app = FastAPI(**app_config)
-
-    yield _app
-
-
-@pytest.fixture
-def client(app):
+def client():
+    setting = get_settings('test')
+    app = create(setting.get_app_setting())
     try:
         assert True
         # assert app.extra['config']['TESTING'] is True
